@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geograph Project Transparency Hub | PM & CS Team Alignment</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --geograph-purple: #6f42c1;
+            --geograph-purple-light: #8e6bd3;
+            --geograph-purple-dark: #5a32a8;
+            --hubspot-orange: #ff7a59;
+            --teams-blue: #6264a7;
+            --success-green: #10b981;
+            --warning-orange: #f59e0b;
+            --error-red: #ef4444;
+            --neutral-gray: #6b7280;
+            --light-bg: #f8fafc;
+            --pm-color: #3b82f6;
+            --cs-color: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        body {
+            background: var(--light-bg);
+            color: #1e293b;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--geograph-purple);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--geograph-purple);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--neutral-gray);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover, nav a.active {
+            color: var(--geograph-purple);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--geograph-purple);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--geograph-purple-dark);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--geograph-purple);
+            color: var(--geograph-purple);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(111, 66, 193, 0.1);
+        }
+        
+        .btn-pm {
+            background: var(--pm-color);
+            color: white;
+        }
+        
+        .btn-cs {
+            background: var(--cs-color);
+            color: white;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--geograph-purple) 0%, var(--geograph-purple-light) 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        /* Dashboard Section */
+        .dashboard {
+            padding: 40px 0;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--geograph-purple);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        /* Project Health Grid */
+        .project-health-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .health-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 4px solid var(--geograph-purple);
+        }
+        
+        .health-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .project-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .health-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-on-track {
+            background: #d1fae5;
+            color: var(--success-green);
+        }
+        
+        .status-at-risk {
+            background: #fef3c7;
+            color: var(--warning-orange);
+        }
+        
+        .status-off-track {
+            background: #fee2e2;
+            color: var(--error-red);
+        }
+        
+        .project-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--neutral-gray);
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: 500;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-green {
+            background: var(--success-green);
+        }
+        
+        .progress-yellow {
+            background: var(--warning-orange);
+        }
+        
+        .progress-red {
+            background: var(--error-red);
+        }
+        
+        /* Team Alignment Section */
+        .team-alignment {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .alignment-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .alignment-icon {
+            color: var(--geograph-purple);
+            font-size: 1.5rem;
+        }
+        
+        .alignment-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .team-column {
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .team-pm {
+            background: #eff6ff;
+            border-left: 4px solid var(--pm-color);
+        }
+        
+        .team-cs {
+            background: #ecfdf5;
+            border-left: 4px solid var(--cs-color);
+        }
+        
+        .team-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .team-list {
+            list-style: none;
+        }
+        
+        .team-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .team-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-status {
+            font-size: 0.8rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+        
+        .status-complete {
+            background: #d1fae5;
+            color: var(--success-green);
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: var(--warning-orange);
+        }
+        
+        .status-overdue {
+            background: #fee2e2;
+            color: var(--error-red);
+        }
+        
+        /* HubSpot Integration */
+        .hubspot-integration {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border-left: 4px solid var(--hubspot-orange);
+        }
+        
+        .hubspot-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .hubspot-icon {
+            color: var(--hubspot-orange);
+            font-size: 1.5rem;
+        }
+        
+        .hubspot-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            background: #fff5f2;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--hubspot-orange);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--neutral-gray);
+        }
+        
+        /* Activity Feed */
+        .activity-feed {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .feed-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .feed-icon {
+            color: var(--geograph-purple);
+            font-size: 1.5rem;
+        }
+        
+        .feed-items {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .feed-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .feed-item:last-child {
+            border-bottom: none;
+        }
+        
+        .feed-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .avatar-pm {
+            background: var(--pm-color);
+        }
+        
+        .avatar-cs {
+            background: var(--cs-color);
+        }
+        
+        .feed-content {
+            flex: 1;
+        }
+        
+        .feed-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .feed-user {
+            font-weight: 600;
+        }
+        
+        .feed-time {
+            font-size: 0.8rem;
+            color: var(--neutral-gray);
+        }
+        
+        .feed-action {
+            color: var(--neutral-gray);
+        }
+        
+        .feed-action strong {
+            color: #1e293b;
+        }
+        
+        /* AI Assistant Section */
+        .ai-assistant {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .assistant-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .assistant-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .assistant-chat {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: 18px;
+            max-width: 80%;
+        }
+        
+        .message.ai {
+            background: #f1f5f9;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+        }
+        
+        .message.user {
+            background: var(--geograph-purple);
+            color: white;
+            border-bottom-right-radius: 4px;
+            margin-left: auto;
+        }
+        
+        .assistant-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .assistant-input input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 24px;
+            outline: none;
+        }
+        
+        /* Footer */
+        footer {
+            background: #1e293b;
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .alignment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">G</div>
+                    <div class="logo-text">Geograph Transparency Hub</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">Dashboard</a></li>
+                        <li><a href="#">Projects</a></li>
+                        <li><a href="#">HubSpot</a></li>
+                        <li><a href="#">Teams</a></li>
+                        <li><a href="#">Analytics</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <button class="btn btn-outline" id="importBtn">Sync Data</button>
+                    <button class="btn btn-primary" id="newUpdateBtn">New Update</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Project Transparency Hub</h1>
+            <p>Real-time alignment between Project Management and Customer Success teams</p>
+            <button class="btn btn-primary" style="background: white; color: var(--geograph-purple);">View Team Dashboard</button>
+        </div>
+    </section>
+
+    <section class="dashboard">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Project Health & Team Alignment</h2>
+                <div>
+                    <button class="btn btn-outline" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Refresh All
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Project Health Grid -->
+            <div class="project-health-grid">
+                <div class="health-card">
+                    <div class="health-header">
+                        <div class="project-name">FiberNet Migration - Northeast</div>
+                        <div class="health-status status-on-track">On Track</div>
+                    </div>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <div class="detail-label">PM / CS</div>
+                            <div class="detail-value">Sarah Chen / Mike Rodriguez</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Current Stage</div>
+                            <div class="detail-value">Implementation</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">HubSpot Deal</div>
+                            <div class="detail-value">#HS-2381</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Last Update</div>
+                            <div class="detail-value">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-green" style="width: 82%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                        <span style="font-size: 0.8rem;">82% Complete</span>
+                        <span style="font-size: 0.8rem;">Due: Jun 30, 2024</span>
+                    </div>
+                </div>
+                
+                <div class="health-card">
+                    <div class="health-header">
+                        <div class="project-name">Urban Broadband Expansion</div>
+                        <div class="health-status status-at-risk">At Risk</div>
+                    </div>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <div class="detail-label">PM / CS</div>
+                            <div class="detail-value">David Kim / Lisa Thompson</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Current Stage</div>
+                            <div class="detail-value">Planning</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">HubSpot Deal</div>
+                            <div class="detail-value">#HS-2415</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Last Update</div>
+                            <div class="detail-value">1 day ago</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-yellow" style="width: 45%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                        <span style="font-size: 0.8rem;">45% Complete</span>
+                        <span style="font-size: 0.8rem;">Due: Aug 15, 2024</span>
+                    </div>
+                </div>
+                
+                <div class="health-card">
+                    <div class="health-header">
+                        <div class="project-name">Rural Connectivity Initiative</div>
+                        <div class="health-status status-off-track">Off Track</div>
+                    </div>
+                    <div class="project-details">
+                        <div class="detail-item">
+                            <div class="detail-label">PM / CS</div>
+                            <div class="detail-value">James Wilson / Amanda Park</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Current Stage</div>
+                            <div class="detail-value">Design</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">HubSpot Deal</div>
+                            <div class="detail-value">#HS-2452</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Last Update</div>
+                            <div class="detail-value">3 days ago</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill progress-red" style="width: 28%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                        <span style="font-size: 0.8rem;">28% Complete</span>
+                        <span style="font-size: 0.8rem;">Due: Sep 20, 2024</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <!-- Team Alignment -->
+                <div class="team-alignment">
+                    <div class="alignment-header">
+                        <div class="alignment-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h3>PM & CS Team Alignment</h3>
+                    </div>
+                    
+                    <div class="alignment-grid">
+                        <div class="team-column team-pm">
+                            <div class="team-title">
+                                <i class="fas fa-tasks" style="color: var(--pm-color);"></i>
+                                Project Management
+                            </div>
+                            <ul class="team-list">
+                                <li class="team-item">
+                                    <span>Update project timeline</span>
+                                    <span class="item-status status-complete">Complete</span>
+                                </li>
+                                <li class="team-item">
+                                    <span>Review SOW with customer</span>
+                                    <span class="item-status status-pending">Pending</span>
+                                </li>
+                                <li class="team-item">
+                                    <span>Schedule technical team</span>
+                                    <span class="item-status status-overdue">Overdue</span>
+                                </li>
+                                <li class="team-item">
+                                    <span>Complete risk assessment</span>
+                                    <span class="item-status status-pending">Pending</span>
+                                </li>
+                            </ul>
+                            <button class="btn btn-pm" style="margin-top: 15px; width: 100%;">
+                                <i class="fas fa-plus"></i> Add PM Task
+                            </button>
+                        </div>
+                        
+                        <div class="team-column team-cs">
+                            <div class="team-title">
+                                <i class="fas fa-user-friends" style="color: var(--cs-color);"></i>
+                                Customer Success
+                            </div>
+                            <ul class="team-list">
+                                <li class="team-item">
+                                    <span>Client satisfaction check</span>
+                                    <span class="item-status status-complete">Complete</span>
+                                </li>
+                                <li class="team-item">
+                                    <span>Schedule onboarding call</span>
+                                    <span class="item-status status-pending">Pending</span>
+                                </li>
+                                <li class="team-item">
+                                    <span>Update HubSpot notes</span>
+                                    <span class="item-status status-complete">Complete</span>
+                                </li>
+                                <li class="team-item">
+                                    <span>Identify upsell opportunities</span>
+                                    <span class="item-status status-pending">Pending</span>
+                                </li>
+                            </ul>
+                            <button class="btn btn-cs" style="margin-top: 15px; width: 100%;">
+                                <i class="fas fa-plus"></i> Add CS Task
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- HubSpot Integration -->
+                <div class="hubspot-integration">
+                    <div class="hubspot-header">
+                        <div class="hubspot-icon">
+                            <i class="fab fa-hubspot"></i>
+                        </div>
+                        <h3>HubSpot Integration</h3>
+                    </div>
+                    <p>Live sync with HubSpot CRM for deal tracking and customer data</p>
+                    
+                    <div class="hubspot-stats">
+                        <div class="stat-card">
+                            <div class="stat-value" id="activeDeals">12</div>
+                            <div class="stat-label">Active Deals</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="dealValue">$2.4M</div>
+                            <div class="stat-label">Pipeline Value</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="recentActivities">47</div>
+                            <div class="stat-label">Recent Activities</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="syncStatus">98%</div>
+                            <div class="stat-label">Sync Accuracy</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button class="btn btn-hubspot" onclick="syncHubSpot()">
+                            <i class="fas fa-sync-alt"></i> Sync HubSpot Now
+                        </button>
+                        <button class="btn btn-outline" style="margin-left: 10px;" onclick="viewHubSpotDeals()">
+                            <i class="fas fa-external-link-alt"></i> View in HubSpot
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Activity Feed -->
+            <div class="activity-feed">
+                <div class="feed-header">
+                    <div class="feed-icon">
+                        <i class="fas fa-rss"></i>
+                    </div>
+                    <h3>Team Activity Feed</h3>
+                </div>
+                
+                <div class="feed-items">
+                    <div class="feed-item">
+                        <div class="feed-avatar avatar-pm">SK</div>
+                        <div class="feed-content">
+                            <div class="feed-meta">
+                                <div class="feed-user">Sarah Kim (PM)</div>
+                                <div class="feed-time">10 minutes ago</div>
+                            </div>
+                            <div class="feed-action">
+                                Updated the project timeline for <strong>FiberNet Migration</strong> and added new milestones
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feed-item">
+                        <div class="feed-avatar avatar-cs">MR</div>
+                        <div class="feed-content">
+                            <div class="feed-meta">
+                                <div class="feed-user">Mike Rodriguez (CS)</div>
+                                <div class="feed-time">1 hour ago</div>
+                            </div>
+                            <div class="feed-action">
+                                Completed client satisfaction check for <strong>Urban Broadband</strong> - Score: 4.5/5
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feed-item">
+                        <div class="feed-avatar avatar-pm">JW</div>
+                        <div class="feed-content">
+                            <div class="feed-meta">
+                                <div class="feed-user">James Wilson (PM)</div>
+                                <div class="feed-time">3 hours ago</div>
+                            </div>
+                            <div class="feed-action">
+                                Flagged <strong>Rural Connectivity</strong> as at risk due to data quality issues
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feed-item">
+                        <div class="feed-avatar avatar-cs">LT</div>
+                        <div class="feed-content">
+                            <div class="feed-meta">
+                                <div class="feed-user">Lisa Thompson (CS)</div>
+                                <div class="feed-time">5 hours ago</div>
+                            </div>
+                            <div class="feed-action">
+                                Identified upsell opportunity in <strong>FiberNet Migration</strong> - Additional data services
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feed-item">
+                        <div class="feed-avatar avatar-pm">DK</div>
+                        <div class="feed-content">
+                            <div class="feed-meta">
+                                <div class="feed-user">David Kim (PM)</div>
+                                <div class="feed-time">1 day ago</div>
+                            </div>
+                            <div class="feed-action">
+                                Submitted change order request for <strong>Urban Broadband</strong> - Additional mapping requirements
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Assistant -->
+            <div class="ai-assistant">
+                <div class="assistant-header">
+                    <div class="assistant-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>Project Transparency AI Assistant</h3>
+                </div>
+                
+                <div class="assistant-chat" id="assistantChat">
+                    <div class="message ai">
+                        <p>Hello! I'm your Project Transparency Assistant. I can help you identify alignment gaps between PM and CS teams, track project health, and provide insights from HubSpot data.</p>
+                    </div>
+                    <div class="message ai">
+                        <p>I'm detecting that the <strong>Rural Connectivity Initiative</strong> has limited recent updates from both PM and CS teams. Would you like me to suggest follow-up actions?</p>
+                    </div>
+                </div>
+                
+                <div class="assistant-input">
+                    <input type="text" id="assistantInput" placeholder="Ask about project status, team alignment, or HubSpot data...">
+                    <button class="btn btn-primary" id="sendMessage">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Geograph Technologies</h3>
+                    <p>Enabling transparency between Project Management and Customer Success teams.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Team Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">PM Team Hub</a></li>
+                        <li><a href="#">CS Team Hub</a></li>
+                        <li><a href="#">HubSpot Guide</a></li>
+                        <li><a href="#">Training Materials</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                        <li><a href="#">System Status</a></li>
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Geograph</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Partners</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2023 Geograph Technologies. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            initializeAIAssistant();
+            updateHubSpotStats();
+            startLiveUpdates();
+        });
+
+        // AI Assistant functionality
+        const assistantChat = document.getElementById('assistantChat');
+        const assistantInput = document.getElementById('assistantInput');
+        const sendMessageBtn = document.getElementById('sendMessage');
+        
+        function initializeAIAssistant() {
+            sendMessageBtn.addEventListener('click', sendMessage);
+            assistantInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendMessage();
+            });
+        }
+        
+        function sendMessage() {
+            const message = assistantInput.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            assistantInput.value = '';
+            
+            // Simulate AI response after delay
+            setTimeout(() => {
+                const response = generateAIResponse(message);
+                addMessage(response, 'ai');
+            }, 1000);
+        }
+        
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `<p>${text}</p>`;
+            assistantChat.appendChild(messageDiv);
+            assistantChat.scrollTop = assistantChat.scrollHeight;
+        }
+        
+        function generateAIResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            // Project status queries
+            if (lowerMessage.includes('rural') || lowerMessage.includes('connectivity')) {
+                return "The Rural Connectivity Initiative is currently off track at 28% completion. The PM has flagged data quality issues, and there haven't been recent CS updates. I recommend the PM provide a detailed update on the data issues, and the CS team should schedule a client check-in.";
+            }
+            
+            if (lowerMessage.includes('fibernet') || lowerMessage.includes('migration')) {
+                return "FiberNet Migration is on track at 82% completion. Both PM and CS teams have been active recently. The PM updated the timeline, and CS completed a satisfaction check with a 4.5/5 score. The project is expected to complete by June 30.";
+            }
+            
+            if (lowerMessage.includes('urban') || lowerMessage.includes('broadband')) {
+                return "Urban Broadband Expansion is at risk with 45% completion. The PM has submitted a change order for additional mapping requirements. The CS team should follow up on the client's response to the change order and assess impact on satisfaction.";
+            }
+            
+            // Team alignment queries
+            if (lowerMessage.includes('team') || lowerMessage.includes('alignment')) {
+                return "Current team alignment status: PM team has 1 overdue task (scheduling technical team for Urban Broadband) and CS team has 2 pending tasks. The biggest gap is on Rural Connectivity where both teams need to provide updates. I suggest a quick sync meeting to address these items.";
+            }
+            
+            if (lowerMessage.includes('pm') || lowerMessage.includes('project management')) {
+                return "The PM team has 4 active tasks across all projects: 2 complete, 1 pending, and 1 overdue. The overdue task is scheduling the technical team for Urban Broadband. David Kim should provide an update on the change order submission.";
+            }
+            
+            if (lowerMessage.includes('cs') || lowerMessage.includes('customer success')) {
+                return "The CS team has 4 active tasks: 2 complete, 2 pending. The pending tasks are scheduling onboarding calls and identifying upsell opportunities. Mike Rodriguez and Lisa Thompson should coordinate on client communication strategies.";
+            }
+            
+            // HubSpot related queries
+            if (lowerMessage.includes('hubspot') || lowerMessage.includes('crm')) {
+                return "HubSpot integration is active with 98% sync accuracy. There are 12 active deals totaling $2.4M in pipeline value. Recent activities include 47 updates across all deals. The sync was last performed today at 9:42 AM.";
+            }
+            
+            if (lowerMessage.includes('deal') || lowerMessage.includes('pipeline')) {
+                return "The current pipeline has 12 active deals across various stages: 5 in Discovery, 3 in Negotiation, 2 in Proposal, and 2 in Closed Won. The total pipeline value is $2.4M. The highest value deal is FiberNet Migration at $250K.";
+            }
+            
+            // General responses
+            if (lowerMessage.includes('help') || lowerMessage.includes('what can you do')) {
+                return "I can help you: 1) Check project status and health, 2) Identify PM/CS team alignment gaps, 3) Provide HubSpot insights, 4) Suggest follow-up actions, and 5) Answer questions about specific projects or teams. What would you like to know?";
+            }
+            
+            if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                return "Hello! I'm your Project Transparency Assistant. I'm here to help you track project health, team alignment, and HubSpot integration. How can I assist you today?";
+            }
+            
+            // Default response
+            return "I understand you're asking about '" + message + "'. For the most accurate information, could you specify if you're interested in a particular project, team, or HubSpot data?";
+        }
+        
+        // HubSpot integration functions
+        function syncHubSpot() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Syncing...';
+            btn.disabled = true;
+            
+            // Simulate API call to HubSpot
+            setTimeout(() => {
+                updateHubSpotStats();
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                showNotification('HubSpot data synchronized successfully', 'success');
+                
+                // Add to activity feed
+                addActivityFeedItem('system', 'HubSpot data synchronized - 12 deals, 47 activities updated');
+            }, 1500);
+        }
+        
+        function updateHubSpotStats() {
+            // Simulate updating stats from HubSpot
+            document.getElementById('activeDeals').textContent = Math.floor(Math.random() * 3) + 10;
+            document.getElementById('dealValue').textContent = '$' + (Math.floor(Math.random() * 0.3) + 2.3).toFixed(1) + 'M';
+            document.getElementById('recentActivities').textContent = Math.floor(Math.random() * 10) + 40;
+            document.getElementById('syncStatus').textContent = (Math.floor(Math.random() * 2) + 97) + '%';
+        }
+        
+        function viewHubSpotDeals() {
+            showNotification('Opening HubSpot deals dashboard...', 'info');
+            // In a real app, this would open HubSpot
+        }
+        
+        // Activity feed functions
+        function addActivityFeedItem(userInitials, action, userType = 'pm') {
+            const feedItems = document.querySelector('.feed-items');
+            const feedItem = document.createElement('div');
+            feedItem.className = 'feed-item';
+            
+            const avatarClass = userType === 'pm' ? 'avatar-pm' : 'avatar-cs';
+            const userName = userType === 'pm' ? 'System Update' : 'System Update';
+            
+            feedItem.innerHTML = `
+                <div class="feed-avatar ${avatarClass}">${userInitials}</div>
+                <div class="feed-content">
+                    <div class="feed-meta">
+                        <div class="feed-user">${userName}</div>
+                        <div class="feed-time">Just now</div>
+                    </div>
+                    <div class="feed-action">${action}</div>
+                </div>
+            `;
+            
+            feedItems.insertBefore(feedItem, feedItems.firstChild);
+            
+            // Limit to 10 items
+            if (feedItems.children.length > 10) {
+                feedItems.removeChild(feedItems.lastChild);
+            }
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                updateHubSpotStats();
+                showNotification('All data refreshed successfully', 'success');
+            });
+            
+            // New update button
+            document.getElementById('newUpdateBtn').addEventListener('click', function() {
+                showNotification('Opening new update form...', 'info');
+                // In a real app, this would open a form to add a new update
+            });
+        }
+        
+        // Live updates simulation
+        function startLiveUpdates() {
+            // Simulate live data updates
+            setInterval(() => {
+                // Occasionally update HubSpot stats
+                if (Math.random() > 0.7) {
+                    updateHubSpotStats();
+                }
+                
+                // Occasionally add a random activity
+                if (Math.random() > 0.8) {
+                    const activities = [
+                        { user: 'AP', action: 'Updated client notes in HubSpot for <strong>Rural Connectivity</strong>', type: 'cs' },
+                        { user: 'JW', action: 'Completed risk assessment for <strong>Urban Broadband</strong>', type: 'pm' },
+                        { user: 'MR', action: 'Scheduled onboarding call for <strong>FiberNet Migration</strong>', type: 'cs' },
+                        { user: 'DK', action: 'Reviewed SOW with customer for <strong>Urban Broadband</strong>', type: 'pm' }
+                    ];
+                    
+                    const activity = activities[Math.floor(Math.random() * activities.length)];
+                    addActivityFeedItem(activity.user, activity.action, activity.type);
+                }
+            }, 30000); // Update every 30 seconds
+        }
+        
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'success' ? 'var(--success-green)' : 
+                            type === 'error' ? 'var(--error-red)' : 'var(--hubspot-orange)'};
+                color: white;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                z-index: 1001;
+                transition: transform 0.3s, opacity 0.3s;
+                transform: translateX(100%);
+                opacity: 0;
+            `;
+            notification.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 
+                              type === 'error' ? 'fa-exclamation-circle' : 
+                              'fa-info-circle'}"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+                notification.style.opacity = '1';
+            }, 10);
+            
+            // Animate out after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                notification.style.opacity = '0';
+                
+                // Remove from DOM after animation
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Initialize with some AI guidance
+        setTimeout(() => {
+            addMessage("I'm detecting that the PM and CS teams have good alignment on FiberNet Migration, but there's a gap on Rural Connectivity. The PM has flagged issues, but the CS team hasn't updated the client yet. Would you like me to suggest specific actions to improve alignment?", 'ai');
+        }, 5000);
+    </script>
+</body>
+</html>
